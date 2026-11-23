@@ -1,0 +1,6 @@
+title = 'Synthetic fixtures are reserved examples, not real citizen records'
+[extend]
+useDefault = true
+[[allowlists]]
+description = 'Publicly documented synthetic CI credential literals'
+regexes = ['synthetic-ci-(password|admin)']

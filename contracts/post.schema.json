@@ -1,0 +1,107 @@
+{
+  "properties": {
+    "post_id": {
+      "format": "uuid",
+      "title": "Post Id",
+      "type": "string"
+    },
+    "source_id": {
+      "format": "uuid",
+      "title": "Source Id",
+      "type": "string"
+    },
+    "source_type": {
+      "title": "Source Type",
+      "type": "string"
+    },
+    "url": {
+      "title": "Url",
+      "type": "string"
+    },
+    "title": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Title"
+    },
+    "text": {
+      "title": "Text",
+      "type": "string"
+    },
+    "published_at": {
+      "format": "date-time",
+      "title": "Published At",
+      "type": "string"
+    },
+    "collected_at": {
+      "format": "date-time",
+      "title": "Collected At",
+      "type": "string"
+    },
+    "language": {
+      "title": "Language",
+      "type": "string"
+    },
+    "processing_status": {
+      "title": "Processing Status",
+      "type": "string"
+    },
+    "is_deleted_at_source": {
+      "title": "Is Deleted At Source",
+      "type": "boolean"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "topics": {
+      "default": [],
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Topics",
+      "type": "array"
+    },
+    "regions": {
+      "default": [],
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Regions",
+      "type": "array"
+    },
+    "sentiment": {
+      "default": [],
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Sentiment",
+      "type": "array"
+    }
+  },
+  "required": [
+    "post_id",
+    "source_id",
+    "source_type",
+    "url",
+    "title",
+    "text",
+    "published_at",
+    "collected_at",
+    "language",
+    "processing_status",
+    "is_deleted_at_source",
+    "updated_at"
+  ],
+  "title": "PostOut",
+  "type": "object"
+}

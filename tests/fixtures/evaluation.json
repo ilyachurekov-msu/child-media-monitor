@@ -1,0 +1,14 @@
+[
+  {"text":"В Москве открыли школу", "topics":["education"], "region":"RU-MOW", "pii":false},
+  {"text":"Семьи получают социальные выплаты", "topics":["family","social_support"], "region":null, "pii":false},
+  {"text":"Медицинская помощь и лекарства", "topics":["healthcare"], "region":null, "pii":false},
+  {"text":"Опека помогает сиротам", "topics":["orphanhood"], "region":null, "pii":false},
+  {"text":"Обсуждается безопасность школьников", "topics":["safety","education"], "region":null, "pii":false},
+  {"text":"Биржа торгует нефтью", "topics":[], "region":null, "pii":false},
+  {"text":"Контакт example@example.invalid", "topics":[], "region":null, "pii":true},
+  {"text":"Телефон +7 (000) 000-00-00", "topics":[], "region":null, "pii":true},
+  {"text":"Паспорт 00 00 000000", "topics":[], "region":null, "pii":true},
+  {"text":"СНИЛС 000-000-000 00", "topics":[], "region":null, "pii":true},
+  {"text":"улица Учебная, дом 999, квартира 99", "topics":[], "region":null, "pii":true},
+  {"text":"Школьник Тестов Пример Образцович, диагноз", "topics":["education"], "region":null, "pii":true}
+]
