@@ -86,3 +86,22 @@ def test_rss_storage_update_privacy_and_api(fixture_source):
         db.merge(Embedding(post_id=pid, model='synthetic', model_version='test-only', vector=[.1] * 384))
         db.commit()
         assert len(db.get(Embedding, (pid, 'synthetic', 'test-only')).vector) == 384
+
+
+def test_sensitive_update_revokes_publication(fixture_source):
+    sid = fixture_source
+    load(sid)
+    pid = post_id(sid, 'fixture-public-1')
+    with Session.begin() as db:
+        db.add(Embedding(post_id=pid, model='synthetic', model_version='test-only', vector=[.1] * 384))
+    original = (FIXTURES / 'public.xml').read_bytes()
+    changed = original.replace('Образование: в Москве открыли новую школу с библиотекой.'.encode(),
+        'Несовершеннолетний Тестов Пример Образцович, диагноз, контакт example@example.invalid.'.encode())
+    load(sid, body=changed)
+    with Session() as db:
+        assert 'example@example.invalid' in db.get(Post, pid).text  # Raw retained separately.
+        check = db.get(PrivacyCheck, pid)
+        assert check.status == 'held'
+        assert 'example@example.invalid' not in check.safe_text
+        assert db.get(Embedding, (pid, 'synthetic', 'test-only')) is None
+    assert TestClient(app).get('/api/v1/media/posts/' + str(pid)).status_code == 404

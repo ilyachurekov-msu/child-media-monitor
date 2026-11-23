@@ -1,8 +1,6 @@
 name: MVP acceptance
 on:
   pull_request:
-  push:
-    branches: ['codex/**']
   workflow_dispatch:
 permissions:
   contents: read
