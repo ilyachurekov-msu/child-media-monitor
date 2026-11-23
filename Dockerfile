@@ -2,7 +2,7 @@ FROM python:3.11-slim
 WORKDIR /srv
 COPY pyproject.toml ./
 COPY app ./app
-RUN pip install --no-cache-dir .
+RUN pip install --no-cache-dir --upgrade 'setuptools>=84.1' && pip install --no-cache-dir .
 COPY . .
 ENV PYTHONUNBUFFERED=1 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 RUN useradd -m monitor && chown -R monitor:monitor /srv

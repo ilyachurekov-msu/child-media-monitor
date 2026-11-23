@@ -1,12 +1,12 @@
 [build-system]
-requires = ["setuptools>=69"]
+requires = ["setuptools>=84.1"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "child-media-monitor"
 version = "0.1.0"
 requires-python = ">=3.11"
-dependencies = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "sqlalchemy>=2.0,<3", "psycopg[binary]>=3.2,<4", "alembic>=1.13,<2", "pgvector>=0.3,<1", "pydantic-settings>=2.5,<3", "httpx>=0.27,<1", "feedparser>=6.0,<7", "beautifulsoup4>=4.12,<5", "streamlit>=1.39,<2", "pandas>=2.2,<3", "natasha==1.6.0", "numpy>=1.26,<2", "pyarrow>=18,<20"]
+dependencies = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "sqlalchemy>=2.0,<3", "psycopg[binary]>=3.2,<4", "alembic>=1.13,<2", "pgvector>=0.3,<1", "pydantic-settings>=2.5,<3", "httpx>=0.27,<1", "feedparser>=6.0,<7", "beautifulsoup4>=4.12,<5", "streamlit>=1.39,<2", "pandas>=2.2,<3", "natasha==1.6.0", "numpy>=1.26,<2", "pyarrow>=23.0.1,<24"]
 
 [project.optional-dependencies]
 nlp = ["sentence-transformers>=3.2,<6", "transformers>=4.45,<5", "safetensors>=0.4"]
