@@ -1,0 +1,93 @@
+name: MVP acceptance
+on:
+  pull_request:
+  push:
+    branches: ['codex/**']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: acceptance-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: monitor
+          POSTGRES_PASSWORD: synthetic-ci-password
+          POSTGRES_DB: monitor
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U monitor"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      DATABASE_URL: postgresql+psycopg://monitor:synthetic-ci-password@localhost:5432/monitor
+      TEST_DATABASE_URL: postgresql+psycopg://monitor:synthetic-ci-password@localhost:5432/monitor
+      ADMIN_TOKEN: synthetic-ci-admin
+      COLLECTION_ENABLED: 'false'
+      HF_HUB_OFFLINE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11', cache: pip}
+      - run: python -m pip install -e '.[dev]'
+      - run: python -m pip check
+      - run: python -m compileall -q app migrations scripts tests
+      - run: ruff check app tests scripts migrations shared-contracts
+      - run: alembic upgrade head
+      - run: python -m scripts.seed
+      - run: python -m pytest -q --junitxml=artifacts/tests.xml
+      - name: Reject any skipped mandatory test
+        run: python -c "import xml.etree.ElementTree as E; r=E.parse('artifacts/tests.xml'); assert not r.findall('.//skipped'), 'CI must not skip tests'"
+      - run: python -m scripts.evaluate
+      - run: python -m pip_audit --progress-spinner off
+      - run: python -m scripts.check_publication
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-reports
+          path: |
+            artifacts/tests.xml
+            artifacts/evaluation.json
+          retention-days: 7
+  containers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ADMIN_TOKEN: synthetic-ci-admin
+      POSTGRES_PASSWORD: synthetic-ci-password
+      COLLECTION_ENABLED: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python -m pip install playwright httpx
+      - run: python -m playwright install --with-deps chromium
+      - run: docker compose build
+      - run: docker compose up -d --wait --wait-timeout 240
+      - run: docker compose exec -T api python -m scripts.ci_fixture
+      - run: python -m scripts.http_smoke
+      - name: Persistence after PostgreSQL restart
+        run: |
+          docker compose stop api worker ui
+          docker compose restart db
+          docker compose up -d --wait --wait-timeout 120 api worker ui
+          python -m scripts.http_smoke
+      - run: python -m scripts.browser_smoke
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: synthetic-ui-screenshots
+          path: artifacts/ui/*.png
+          retention-days: 7
+      - name: Cleanup isolated CI services
+        if: always()
+        run: docker compose down -v --remove-orphans

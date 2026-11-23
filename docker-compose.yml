@@ -1,0 +1,74 @@
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: '10m'
+    max-file: '3'
+services:
+  db:
+    logging: *logging
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: monitor
+      POSTGRES_USER: monitor
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-local-change-me}
+    ports: ["127.0.0.1:5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U monitor"]
+      interval: 5s
+      retries: 20
+  migrate:
+    logging: *logging
+    build: .
+    environment: &env
+      DATABASE_URL: postgresql+psycopg://monitor:${POSTGRES_PASSWORD:-local-change-me}@db:5432/monitor
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?Set ADMIN_TOKEN in .env}
+      NLP_ENABLED: ${NLP_ENABLED:-false}
+      MODEL_PATH: /models/e5
+      MODEL_VERSION: ${MODEL_VERSION:-uninstalled}
+      SENTIMENT_PATH: /models/sentiment
+      SENTIMENT_VERSION: ${SENTIMENT_VERSION:-uninstalled}
+      HF_HUB_OFFLINE: "1"
+      COLLECTION_ENABLED: ${COLLECTION_ENABLED:-true}
+    command: ["sh", "-c", "alembic upgrade head && python -m scripts.seed"]
+    depends_on:
+      db: {condition: service_healthy}
+  api:
+    logging: *logging
+    build: .
+    environment: *env
+    ports: ["127.0.0.1:8000:8000"]
+    volumes: ["./models:/models:ro"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 5s
+      retries: 30
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+  worker:
+    logging: *logging
+    build: .
+    environment: *env
+    volumes: ["./models:/models:ro"]
+    command: ["python", "-m", "app.workers.main"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os,time; assert time.time()-os.stat('/tmp/worker-heartbeat').st_mtime < 300"]
+      interval: 10s
+      retries: 30
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+  ui:
+    logging: *logging
+    build: .
+    environment:
+      API_URL: http://api:8000
+      ADMIN_TOKEN: ${ADMIN_TOKEN}
+    command: ["streamlit", "run", "app/ui/main.py", "--server.address=0.0.0.0"]
+    ports: ["127.0.0.1:8501:8501"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8501/_stcore/health')"]
+      interval: 5s
+      retries: 30
+    depends_on: [api]
+volumes:
+  pgdata:

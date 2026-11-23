@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"><channel><title>Synthetic fixture</title>
+<item><guid>fixture-public-1</guid><link>https://example.org/news/100</link><title>В Москве открыли школу</title><description>Образование: в Москве открыли новую школу с библиотекой.</description><pubDate>Mon, 23 Nov 2026 12:00:00 +0300</pubDate></item>
+<item><guid>fixture-public-2</guid><link>https://example.org/news/101</link><title>Социальная поддержка семей</title><description>Обсуждается поддержка семей и школьная инфраструктура.</description><pubDate>Mon, 23 Nov 2026 13:00:00 +0300</pubDate></item>
+</channel></rss>

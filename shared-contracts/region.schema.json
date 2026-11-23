@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "region",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "region_id",
+    "name",
+    "federal_district",
+    "okato_code",
+    "oktmo_code",
+    "valid_from",
+    "valid_to"
+  ],
+  "properties": {
+    "region_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "federal_district": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "okato_code": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "oktmo_code": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "valid_from": {
+      "type": "string"
+    },
+    "valid_to": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

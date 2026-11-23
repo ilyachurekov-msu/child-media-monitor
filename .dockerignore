@@ -1,0 +1,14 @@
+.git
+.env
+.test-deps
+.acceptance-deps
+.arrow-deps
+build
+dist
+.ruff_cache
+.venv
+__pycache__
+.pytest_cache
+models
+artifacts
+docs/source-check.json

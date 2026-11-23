@@ -1,0 +1,8 @@
+{
+  "contract_version": "1.0.0",
+  "region_id_scheme": "ISO 3166-2 standalone subset, pending platform reconciliation",
+  "regions_snapshot_date": "2026-11-24",
+  "platform_canonical_regions_supplied": false,
+  "source_uuid_namespace": "72c4db98-6752-5fe0-a56d-af600628f13b",
+  "embedding_dimensions": 384
+}

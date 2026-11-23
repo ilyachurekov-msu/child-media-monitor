@@ -1,0 +1,10 @@
+{
+  "intfloat/multilingual-e5-small": {
+    "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "verified_inference": false
+  },
+  "cointegrated/rubert-tiny-sentiment-balanced": {
+    "revision": "e0679dd4460e48648f5d4d819ae0f505384f5a9d",
+    "verified_inference": false
+  }
+}

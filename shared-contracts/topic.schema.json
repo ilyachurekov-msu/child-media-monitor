@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "topic",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "topic_id",
+    "name",
+    "parent_topic_id"
+  ],
+  "properties": {
+    "topic_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "parent_topic_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}
