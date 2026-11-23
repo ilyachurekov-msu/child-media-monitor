@@ -2,7 +2,7 @@
 
 ## GitHub
 
-Workflow .github/workflows/ci.yml запускается на PR, codex/* push и workflow_dispatch; только contents:read. Jobs независимы: test использует PostgreSQL16+pgvector, containers собирает образ и запускает Compose с отключенным реальным сбором. RSS — локальные синтетические файлы, не внешние сайты. Проверяются миграции, индексы, дубли, обновления, UUID, API, приватность, рестарт PostgreSQL, API/worker/Streamlit health и браузер. При CI без TEST_DATABASE_URL pytest падает, пропуски запрещены. Скриншоты только синтетического UI, срок артефактов 7 дней. Нет deployment, auto-merge и release.
+Workflow .github/workflows/ci.yml запускается на PR и workflow_dispatch; только contents:read. Jobs независимы: test использует PostgreSQL16+pgvector, containers собирает образ и запускает Compose с отключенным реальным сбором. RSS — локальные синтетические файлы, не внешние сайты. Проверяются миграции, индексы, дубли, обновления, UUID, API, приватность, рестарт PostgreSQL, API/worker/Streamlit health и браузер. При CI без TEST_DATABASE_URL pytest падает, пропуски запрещены. Скриншоты только синтетического UI, срок артефактов 7 дней. Нет deployment, auto-merge и release.
 
 ## Без Docker
 

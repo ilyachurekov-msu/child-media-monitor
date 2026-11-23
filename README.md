@@ -1,6 +1,6 @@
 # Мониторинг информационного поля
 
-Самостоятельный модуль «Навигатора детства». FastAPI + PostgreSQL 16/pgvector + Streamlit + отдельный worker. Кандидат MVP v0.1.0 проходит техническую приемку: [docs/mvp-readiness.md](docs/mvp-readiness.md). Автоматизация: [.github/workflows/ci.yml](.github/workflows/ci.yml). Docker Desktop владельцу для приемки не требуется: контейнеры проверяются GitHub Actions.
+Самостоятельный модуль «Навигатора детства». FastAPI + PostgreSQL 16/pgvector + Streamlit + отдельный worker. Базовый MVP v0.1.0 прошел автоматическую техническую приемку: [результаты и ограничения](docs/mvp-readiness.md). Автоматизация: [.github/workflows/ci.yml](.github/workflows/ci.yml). Docker Desktop владельцу для приемки не требуется: контейнеры проверяются GitHub Actions. Код предложен в [PR №1](https://github.com/ilyachurekov-msu/child-media-monitor/pull/1), без автоматического слияния.
 
 Новая публичная выдача содержит только безопасные выдержки текущей privacy-проверки. Исходные тексты не доступны через API, поиск или дайджест. Проверка Natasha + regex снижает риск, но не гарантирует полного обнаружения ПД. [Защита данных](docs/privacy.md), [запуск и CI](docs/deployment.md), [аудит](docs/mvp-audit.md).
 
